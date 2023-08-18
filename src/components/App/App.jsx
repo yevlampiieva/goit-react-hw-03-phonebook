@@ -3,7 +3,9 @@ import { nanoid } from 'nanoid';
 import { ContactForm } from '../ContactForm/ContactForm';
 import ContactList from '../ContactList/ContactList';
 import { Filter } from '../Filter/Filter';
-import { Container, ContactFormTitle, ContactListTitle } from './App.styled';
+import { ContactFormTitle, ContactListTitle } from './App.styled';
+import { GlobalStyle } from 'components/GlobalStyle';
+import { Layout } from 'components/Layout';
 
 export class App extends Component {
   state = {
@@ -25,7 +27,7 @@ export class App extends Component {
     };
 
     if (this.state.contacts.some(contacts => contacts.name === name)) {
-      alert(`${name} is already in contacts.`);
+      alert(`${name} is already in contacts`);
     } else {
       this.setState(({ contacts }) => ({
         contacts: [contact, ...contacts],
@@ -59,7 +61,7 @@ export class App extends Component {
     }
   }
 
-  componentDidUpdate(prevState, prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     if (this.state.contacts !== prevState.contacts) {
       localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
     }
@@ -69,7 +71,7 @@ export class App extends Component {
     const { filter } = this.state;
     const visibleContacts = this.getVisibleContacts();
     return (
-      <Container>
+      <Layout>
         <ContactFormTitle>Phonebook</ContactFormTitle>
         <ContactForm onSubmit={this.addContact} />
 
@@ -79,7 +81,8 @@ export class App extends Component {
           contacts={visibleContacts}
           onDeleteContact={this.deleteContact}
         />
-      </Container>
+        <GlobalStyle />
+      </Layout>
     );
   }
 }

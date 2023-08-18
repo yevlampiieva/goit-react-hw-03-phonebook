@@ -7,7 +7,7 @@ export const ContactFormContainer = styled.form`
   margin: 0 auto;
   margin-bottom: 16px;
   padding: 10px 20px;
-  width: 500px;
+  width: 600px;
   border: 2px solid black;
   border-radius: 4px;
   list-style-type: none;
@@ -20,7 +20,7 @@ export const ContactListLabel = styled.label`
 `;
 
 export const ContactListInput = styled.input`
-  width: 400px;
+  width: 500px;
   height: 32px;
   font-size: 16px;
   padding: 0 5px;

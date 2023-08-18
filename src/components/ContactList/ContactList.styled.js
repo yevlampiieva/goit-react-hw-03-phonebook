@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Container = styled.ul`
   margin: 0 auto;
   padding: 10px 20px;
-  width: 500px;
+  width: 600px;
   border: 2px solid black;
   border-radius: 4px;
   list-style-type: none;
