@@ -1,11 +1,13 @@
 import { Component } from 'react';
 import { nanoid } from 'nanoid';
 import { ContactForm } from '../ContactForm/ContactForm';
-import ContactList from '../ContactList/ContactList';
+import { ContactList } from '../ContactList/ContactList';
 import { Filter } from '../Filter/Filter';
 import { ContactFormTitle, ContactListTitle } from './App.styled';
 import { GlobalStyle } from 'components/GlobalStyle';
 import { Layout } from 'components/Layout';
+
+const localStorageKey = 'my-contacts';
 
 export class App extends Component {
   state = {
@@ -54,16 +56,17 @@ export class App extends Component {
   };
 
   componentDidMount() {
-    const contacts = localStorage.getItem('contacts');
-    const parsedContacts = JSON.parse(contacts);
-    if (parsedContacts) {
-      this.setState({ contacts: parsedContacts });
+    const myContacts = localStorage.getItem(localStorageKey);
+    if (myContacts !== null) {
+      this.setState({ contacts: JSON.parse(myContacts) });
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.contacts !== prevState.contacts) {
-      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    const { contacts: nextContacts } = this.state;
+    const { contacts: prevContacts } = prevState;
+    if (nextContacts !== prevContacts) {
+      localStorage.setItem(localStorageKey, JSON.stringify(nextContacts));
     }
   }
 
@@ -73,7 +76,7 @@ export class App extends Component {
     return (
       <Layout>
         <ContactFormTitle>Phonebook</ContactFormTitle>
-        <ContactForm onSubmit={this.addContact} />
+        <ContactForm onAdd={this.addContact} />
 
         <ContactListTitle>Contacts</ContactListTitle>
         <Filter filter={filter} onChange={this.changeFilter} />

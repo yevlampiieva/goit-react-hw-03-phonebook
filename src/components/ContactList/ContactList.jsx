@@ -6,7 +6,7 @@ import {
   DeleteBtn,
 } from './ContactList.styled';
 
-const ContactList = ({ contacts, onDeleteContact }) => (
+export const ContactList = ({ contacts, onDeleteContact }) => (
   <Container>
     {contacts.map(({ id, name, number }) => (
       <Contact key={id}>
@@ -32,4 +32,4 @@ ContactList.propTypes = {
   onDeleteContact: PropTypes.func.isRequired,
 };
 
-export default ContactList;
+

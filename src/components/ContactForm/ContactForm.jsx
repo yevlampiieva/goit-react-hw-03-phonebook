@@ -1,62 +1,58 @@
-import { Component } from 'react';
-import PropTypes from 'prop-types';
+import { Formik } from 'formik';
+import * as yup from 'yup';
 import {
   ContactFormContainer,
   ContactListLabel,
   ContactListInput,
+  StyledError,
   AddContactBtn,
 } from './ContactForm.styled';
 
-export class ContactForm extends Component {
-  state = {
-    name: '',
-    number: '',
-  };
+const nameRules = /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/;
+const numberRules =
+  /\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/;
 
-  handleChange = evt => {
-    const { name, value } = evt.target;
-    this.setState({ [name]: value });
-  };
+const schema = yup.object().shape({
+  name: yup.string().required('This field is required').matches(nameRules, {
+    message:
+      "Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan",
+  }),
+  number: yup.string().required('This field is required').matches(numberRules, {
+    message:
+      'Phone number must be digits and can contain spaces, dashes, parentheses and can start with +',
+  }),
+});
 
-  handleSubmit = evt => {
-    evt.preventDefault();
-    this.props.onSubmit(this.state);
-    this.setState({ name: '', number: '' });
-  };
+const initialValues = {
+  name: '',
+  number: '',
+};
 
-  render() {
-    return (
-      <ContactFormContainer onSubmit={this.handleSubmit}>
-        <ContactListLabel htmlFor="contact__name">Name</ContactListLabel>
-        <ContactListInput
-          type="text"
-          name="name"
-          id="contact__name"
-          value={this.state.name}
-          onChange={this.handleChange}
-          pattern="^[a-zA-Zа-яА-Я]+(([' \-][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-          title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-          required
-        />
+export const ContactForm = ({ onAdd }) => {
+  return (
+    <Formik
+      initialValues={initialValues}
+      validationSchema={schema}
+      onSubmit={(values, actions) => {
+        onAdd(values);
+        actions.resetForm();
+      }}
+    >
+      <ContactFormContainer autoComplete="off">
+        <ContactListLabel>
+          Name
+          <ContactListInput type="text" name="name" />
+          <StyledError name="name" component="div" />
+        </ContactListLabel>
 
-        <ContactListLabel htmlFor="contact__number">Number</ContactListLabel>
-        <ContactListInput
-          type="tel"
-          name="number"
-          id="contact__number"
-          value={this.state.number}
-          onChange={this.handleChange}
-          pattern="\+?\d{1,4}?[\-.\s]?\(?\d{1,3}?\)?[\-.\s]?\d{1,4}[\-.\s]?\d{1,4}[\-.\s]?\d{1,9}"
-          title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-          required
-        />
+        <ContactListLabel>
+          Number
+          <ContactListInput type="tel" name="number" />
+          <StyledError name="number" component="div" />
+        </ContactListLabel>
 
         <AddContactBtn type="submit">Add contact</AddContactBtn>
       </ContactFormContainer>
-    );
-  }
-}
-
-ContactForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
+    </Formik>
+  );
 };

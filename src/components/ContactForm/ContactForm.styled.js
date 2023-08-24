@@ -1,6 +1,7 @@
 import styled from 'styled-components';
+import { Form, Field, ErrorMessage } from 'formik';
 
-export const ContactFormContainer = styled.form`
+export const ContactFormContainer = styled(Form)`
   display: flex;
   flex-direction: column;
   align-items: start;
@@ -14,17 +15,21 @@ export const ContactFormContainer = styled.form`
 `;
 
 export const ContactListLabel = styled.label`
+  display: flex;
+  flex-direction: column;
   font-size: 18px;
   font-weight: 600;
-  margin-bottom: 8px;
 `;
 
-export const ContactListInput = styled.input`
+export const ContactListInput = styled(Field)`
   width: 500px;
   height: 32px;
   font-size: 16px;
   padding: 0 5px;
-  margin-bottom: 16px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  border-radius: 4px;
+  border: 1px solid black;
 `;
 
 export const AddContactBtn = styled.button`
@@ -32,7 +37,7 @@ export const AddContactBtn = styled.button`
   height: 32px;
   font-size: 16px;
   border: 1px solid black;
-  border-radius: 2px;
+  border-radius: 4px;
   cursor: pointer;
 
   &:hover,
@@ -42,4 +47,10 @@ export const AddContactBtn = styled.button`
     outline: none;
     border: 1px solid transparent;
   }
+`;
+
+export const StyledError = styled(ErrorMessage)`
+  color: red;
+  font-size: 14px;
+  margin-bottom: 8px;
 `;
